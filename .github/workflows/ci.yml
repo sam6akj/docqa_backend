@@ -45,3 +45,10 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/docqa-api:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/docqa-api:${{ github.sha }}
+
+  deploy:
+    needs: docker-build-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
