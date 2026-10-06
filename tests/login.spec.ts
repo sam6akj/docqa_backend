@@ -6,6 +6,13 @@ const user = {
 };
 
 test.describe("POST /api/auth/login", () => {
+  test.beforeAll(async ({ playwright, baseURL }) => {
+    const ctx = await playwright.request.newContext({ baseURL });
+    const res = await ctx.post("/api/auth/register", { data: user });
+    expect([200, 201, 400, 409]).toContain(res.status());
+    await ctx.dispose();
+  });
+
   test("logs in with valid credentials", async ({ request }) => {
     const res = await request.post("/api/auth/login", { data: user });
 

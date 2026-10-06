@@ -21,8 +21,8 @@ jobs:
       MAX_DOCS_PER_USER: 5
       EMBEDDING_DIMENSIONS: 768
       GEMINI_API_KEY: test-key
-      TEST_USER_EMAIL: ci-user@example.com
-      TEST_USER_PASSWORD: CiPassword123!
+      TEST_USER_EMAIL: samyak.jain@iihs.ac.in
+      TEST_USER_PASSWORD: 1234
 
     services:
       postgres:
