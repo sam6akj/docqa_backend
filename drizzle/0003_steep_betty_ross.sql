@@ -1,1 +1,3 @@
-ALTER TABLE "chat_messages" ALTER COLUMN "sources" SET DATA TYPE jsonb;
+ALTER TABLE "chat_messages"
+ALTER COLUMN "sources" SET DATA TYPE jsonb
+USING to_jsonb("sources");
