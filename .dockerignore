@@ -12,3 +12,13 @@ Dockerfile
 docker-compose*.yml
 .vscode
 .idea
+
+# tests and their artifacts (not needed in the production image)
+tests/
+playwright.config.ts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+uploads

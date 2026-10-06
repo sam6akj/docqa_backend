@@ -10,3 +10,13 @@ uploads/*
 .DS_Store
 .vscode
 .idea
+
+# Playwright artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+
+# user-uploaded files
+uploads/

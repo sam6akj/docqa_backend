@@ -8,6 +8,37 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: test
+      CORS_ORIGIN: http://localhost:5173
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/docqa_test
+      JWT_ACCESS_SECRET: ci-access-secret-not-for-production
+      JWT_REFRESH_SECRET: ci-refresh-secret-not-for-production
+      UPLOAD_DIR: uploads
+      MAX_PDF_PAGES: 20
+      MAX_UPLOAD_MB: 10
+      MAX_DOCS_PER_USER: 5
+      EMBEDDING_DIMENSIONS: 768
+      GEMINI_API_KEY: test-key
+      TEST_USER_EMAIL: ci-user@example.com
+      TEST_USER_PASSWORD: CiPassword123!
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16  
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: docqa_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,7 +52,13 @@ jobs:
         run: |
             npm ci
             npm run typecheck
-            npm run build
+            npm run build  
+
+      - name: Run migrations
+        run: npm run db:migrate
+            
+      - name: Run Playwright API tests
+        run: npx playwright test
 
   docker-build-push:
     needs: build-test
