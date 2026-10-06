@@ -8,7 +8,16 @@ const PORT = 4000;
 export default defineConfig({
   testDir: "./tests",
   workers: 1,
-  use: { baseURL: `http://localhost:${PORT}` },
+
+  reporter: [
+    ["list"],
+    ["html", { outputFolder: "playwright-report", open: "never" }],
+  ],
+
+  use: {
+    baseURL: `http://localhost:${PORT}`,
+  },
+
   webServer: {
     command: "npx tsx src/server.ts",
     url: `http://localhost:${PORT}/api/health`,
