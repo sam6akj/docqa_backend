@@ -1,4 +1,4 @@
-import { index, integer, pgEnum, pgTable, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
+import { index, integer, jsonb, pgEnum, pgTable, text, timestamp, uuid, vector } from "drizzle-orm/pg-core";
 import { env } from "../config/env.js";
 
 export const users = pgTable("users", {
@@ -64,6 +64,8 @@ export const chatThreads = pgTable(
   (t) => [index("chat_threads_document_idx").on(t.documentId)]
 );
 
+export type SourceSnippet = { index: number; content: string };
+
 export const chatMessages = pgTable(
   "chat_messages",
   {
@@ -73,7 +75,7 @@ export const chatMessages = pgTable(
       .references(() => chatThreads.id, { onDelete: "cascade" }),
     role: chatRole("role").notNull(),
     content: text("content").notNull(),
-    sources: integer("sources").array(),
+    sources: jsonb("sources").$type<SourceSnippet[]>(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (t) => [index("chat_messages_thread_idx").on(t.threadId)]

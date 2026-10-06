@@ -1,7 +1,7 @@
 import type { Response } from "express";
 import { and, asc, cosineDistance, desc, eq, gt, sql } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { chatMessages, chunks } from "../db/schema.js";
+import { chatMessages, chunks, type SourceSnippet } from "../db/schema.js";
 import { embedText, streamChatCompletion } from "./gemini.js";
 
 function buildChatPrompt(question: string, contextChunks: { content: string }[]) {
@@ -76,7 +76,7 @@ export async function runChatTurn({
       fullAnswer += token;
       res.write(`data: ${JSON.stringify({ text: token })}\n\n`);
     }
-    const sources = relevant.map((_, i) => i + 1);
+    const sources: SourceSnippet[] = relevant.map((c, i) => ({ index: i + 1, content: c.content }));
     await db.insert(chatMessages).values({ threadId, role: "assistant", content: fullAnswer, sources });
     res.write(`data: ${JSON.stringify({ done: true, sources })}\n\n`);
   } catch (streamErr) {
