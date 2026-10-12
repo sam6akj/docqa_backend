@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 import { z } from "zod";
 
-// Works whether you run from the repo root or from apps/api
 dotenv.config();
 dotenv.config();
 
@@ -17,6 +16,8 @@ const schema = z.object({
   MAX_PDF_PAGES: z.coerce.number().default(20),
   MAX_UPLOAD_MB: z.coerce.number().default(10),
   MAX_DOCS_PER_USER: z.coerce.number().default(5),
+  MAX_UPLOADS_PER_DAY: z.coerce.number().default(3),
+  MAX_QUESTIONS_PER_DAY: z.coerce.number().default(15),
   GEMINI_API_KEY: z.string().min(1, "Required to embed and chat with documents"),
   EMBEDDING_DIMENSIONS: z.coerce.number().default(768),
 });

@@ -6,6 +6,7 @@ import { requireAuth } from "../middleware/requireAuth.js";
 import { HttpError } from "../middleware/errorHandler.js";
 import { querySchema } from "../schemas/document.js";
 import { runChatTurn } from "../lib/chatTurn.js";
+import { chatLimiter } from "../middleware/rateLimit.js";
 
 export const threadsRouter = Router();
 
@@ -40,7 +41,7 @@ threadsRouter.get("/:id/messages", async (req, res, next) => {
   }
 });
 
-threadsRouter.post("/:id/chat", async (req, res, next) => {
+threadsRouter.post<{ id: string }>("/:id/chat", chatLimiter, async (req, res, next) => {
   try {
     const { question } = querySchema.parse(req.body);
     const thread = await loadOwnedThread(req.params.id, req.user!.id);

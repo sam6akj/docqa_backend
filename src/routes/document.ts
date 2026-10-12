@@ -12,6 +12,7 @@ import { embedText, embedTexts } from "../lib/gemini.js";
 import { runChatTurn } from "../lib/chatTurn.js";
 import { env } from "../config/env.js";
 import { querySchema } from "../schemas/document.js";
+import { chatLimiter, uploadLimiter } from "../middleware/rateLimit.js";
 
 export const documentsRouter = Router();
 
@@ -30,7 +31,7 @@ documentsRouter.get("/", async (req, res, next) => {
   }
 });
 
-documentsRouter.post("/", upload.single("file"), async (req, res, next) => {
+documentsRouter.post("/", uploadLimiter, upload.single("file"), async (req, res, next) => {
   try {
     if (!req.file) {
       throw new HttpError(400, "No file uploaded. Send it as multipart/form-data under the field name 'file'.");
@@ -202,7 +203,7 @@ documentsRouter.get("/:id/threads", async (req, res, next) => {
   }
 });
 
-documentsRouter.post("/:id/threads", async (req, res, next) => {
+documentsRouter.post<{ id: string }>("/:id/threads", chatLimiter, async (req, res, next) => {
   try {
     const { question } = querySchema.parse(req.body);
 
