@@ -19,12 +19,17 @@ export default defineConfig({
   },
 
   projects: [
-    { name: "setup", testMatch: /.*\.setup\.ts/ },
+    {
+      name: "setup",
+      testMatch: /.*\.setup\.ts/,
+    },
     {
       name: "api",
       testMatch: /.*\.spec\.ts/,
       dependencies: ["setup"],
-      use: { storageState: "tests/.auth/session.json" },
+      use: {
+        storageState: "tests/.auth/session.json",
+      },
     },
   ],
 

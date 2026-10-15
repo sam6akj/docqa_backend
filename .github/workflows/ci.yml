@@ -21,8 +21,8 @@ jobs:
       MAX_DOCS_PER_USER: 5
       EMBEDDING_DIMENSIONS: 768
       GEMINI_API_KEY: test-key
-      TEST_USER_EMAIL: samyak.jain@iihs.ac.in
-      TEST_USER_PASSWORD: 1234
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 
     services:
       postgres:
