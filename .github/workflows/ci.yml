@@ -20,7 +20,7 @@ jobs:
       MAX_UPLOAD_MB: 10
       MAX_DOCS_PER_USER: 5
       EMBEDDING_DIMENSIONS: 768
-      GEMINI_API_KEY: test-key
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 
