@@ -18,6 +18,16 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
   },
 
+  projects: [
+    { name: "setup", testMatch: /.*\.setup\.ts/ },
+    {
+      name: "api",
+      testMatch: /.*\.spec\.ts/,
+      dependencies: ["setup"],
+      use: { storageState: "tests/.auth/session.json" },
+    },
+  ],
+
   webServer: {
     command: "npx tsx src/server.ts",
     url: `http://localhost:${PORT}/api/health`,

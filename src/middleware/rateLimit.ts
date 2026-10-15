@@ -29,11 +29,3 @@ export const uploadLimiter = rateLimit({
     `You've reached the limit of ${env.MAX_UPLOADS_PER_DAY} uploads per day. Please try again tomorrow.`
   ),
 });
-
-export const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: jsonLimitHandler("Too many attempts. Please try again in a few minutes."),
-});

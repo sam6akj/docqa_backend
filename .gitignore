@@ -20,3 +20,4 @@ playwright/.auth/
 
 # user-uploaded files
 uploads/
+tests/.auth/

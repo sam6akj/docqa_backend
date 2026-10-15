@@ -14,7 +14,6 @@ import {
 import { requireAuth } from "../middleware/requireAuth.js";
 import { HttpError } from "../middleware/errorHandler.js";
 import { env } from "../config/env.js";
-import { authLimiter } from "../middleware/rateLimit.js";
 
 export const authRouter = Router();
 
@@ -26,7 +25,7 @@ const refreshCookieOptions = {
   path: "/api/auth",
 };
 
-authRouter.post("/register", authLimiter, async (req, res, next) => {
+authRouter.post("/register", async (req, res, next) => {
   try {
     const { email, password } = registerSchema.parse(req.body);
 
@@ -51,7 +50,7 @@ authRouter.post("/register", authLimiter, async (req, res, next) => {
   }
 });
 
-authRouter.post("/login", authLimiter, async (req, res, next) => {
+authRouter.post("/login", async (req, res, next) => {
   try {
     const { email, password } = loginSchema.parse(req.body);
 
